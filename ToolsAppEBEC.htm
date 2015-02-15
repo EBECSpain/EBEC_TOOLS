@@ -1,15 +1,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-	<link rel="stylesheet" type="text/css" href="style.css">
-
-<title>Alquiler de herramientas</title>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Alquiler de herramientas</title>
+	<!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+		
+	<style>
+		body{
+			font-size:12px;
+			font-family:Verdana;
+			background:rgb(255,0,0);
+		}
+		TD{
+			font-family:Verdana;
+			font-size:10px;
+		}
+		A, A:LINK, A:VISITED {
+			text-decoration:none;
+		}
+		#contenedor {
+			position:relative;
+			top:0px;
+			left: 0px;
+			height: 100%;
+		}
+		#main{
+			position:absolute;
+			top:0px;
+			left:0px;
+			margin-top:150px;
+			padding-left:170px;
+			text-align:center;
+			height: 100%;
+			background-position:bottom;
+			background-repeat:no-repeat;
+		}
+	</style>
 </head>
 
 <body>
 
 <div id="contenedor" style="width:2000px">
-	<img id="imgback" src="fondoMainSpain.png">     
+	<img id="imgback" src="fondo.png">     
 	<div id="main">		
 		<p>&nbsp;<br>
 		</p><div style="padding-left:0px" align="justify">
@@ -28,27 +60,47 @@
 <script language="javascript" type="text/javascript">
 <!--
 	var Teams=[
-	"CarlosIII",
-	"MadridUPM",
-	"Valencia",
-	"Valladolid",
-	"Las Palmas",
-	"Barcelona"
+	"1",
+	"2",
+	"3",
+	"4",
+	"5",
+	"6"
 	];
 	var nSlots=3;
 	var Herr=[
 	//{herramienta,minutos_max,coste_coger,coste_minuto},
-		["Pistola de silicona",30,1000,1],
-		["Sierra metal       ",30,1000,1],
-		["Serrucho madera    ",30,1000,1],
-		["Soldador de estaño ",30,1000,1],
-		["Barrena            ",30,1000,1],
-		["Segueta            ",30,1000,1],
-		["Lima               ",30,1000,1],
-		["Sierra de Calar    ",30,1000,1],
-		["Multímetro         ",30,1000,1],
-		["Martillo           ",30,1000,1],
-		["Destornillador     ",30,1000,1]
+		["Pistola de silicona(40)",30,40,0],
+		["Sierra metal       (40)",30,25,0],
+		["Serrucho madera    (25)",30,25,0],
+		["Sierra de arco     (25)",30,25,0],
+		["Guantes             (0)",30,0,0],
+		["Martillo            (0)",30,0,0],
+		["Tijeras             (0)",30,0,0],
+		["Cutter              (0)",30,0,0],
+		["Metro               (0)",30,0,0],
+		["Alargador           (0)",30,0,0],
+		["Destornillador      (0)",30,0,0],
+		["Mat: Liston madera (10)",30,10,0],
+		["Mat: Liston d4-6mm (10)",30,10,0],
+		["Mat: Liston d8-10mm(15)",30,15,0],
+		["Mat: Liston d12mm  (20)",30,20,0],
+		["Mat: Liston 5x10	 (10)",30,10,0],
+		["Mat: Varilla metal (30)",30,30,0],
+		["Mat: Tuerca metal	 (10)",30,10,0],
+		["Mat: Panel madera  (50)",30,50,0],
+		["Mat: Panel corcho	 (50)",30,50,0],
+		["Mat: Carton ondulad(20)",30,20,0],
+		["Mat: Cuerda 1m	 (10)",30,10,0],
+		["Mat: Hembrilla	  (5)",30,5,0],
+		["Mat: Polea     	 (10)",30,30,0],
+		["Mat: Clavos 2ud 	  (5)",30,5,0],
+		["Mat: Gomas largas	  (2)",30,2,0],
+		["Mat: Gomas cortas	  (1)",30,1,0],
+		["Mat: Bridas    	  (5)",30,5,0],
+		["Mat: Cola blanca	 (15)",30,15,0],
+		["Mat: Cinta american(15)",30,15,0],
+		
 	];
 	
 	var Alq=new Array();
@@ -157,7 +209,7 @@
 	{
 		Alq[i]=new Array();
 		Points[i]=[0,0];
-		document.write("<tr><td><div align=\"center\"><font size=\"5\">Eq "+Teams[i]+"</font></div></td><td><div align=\"center\">");
+		document.write("<tr><td><div align=\"center\"><font size=\"5\">Equipo "+Teams[i]+"</font></div></td><td><div align=\"center\">");
 		for(j=0;j<nSlots;j++)
 		{
 			Alq[i][j]=[-1,0];
@@ -179,7 +231,7 @@
 			document.write("<div align=\"center\">");
 			document.write("<input type=\"button\" value=\"Alquilar\" onclick=\"Alquilar("+i+","+j+")\" >");		
 			document.write("<input type=\"button\" value=\"Devolver\" onclick=\"Devolver("+i+","+j+")\" >");			
-			document.write("<input type=\"button\" value=\"Undo\" onclick=\"Corregir("+i+","+j+")\" ></div>");			
+			document.write("<input type=\"button\" value=\"Corregir\" onclick=\"Corregir("+i+","+j+")\" ></div>");			
 		}
 		document.write("</td><td><input id=\"p_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td>");			
 		document.write("<td><input id=\"n_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td><td><textarea rows=\"4\" style=\"width:500px;\"></textarea></td>");

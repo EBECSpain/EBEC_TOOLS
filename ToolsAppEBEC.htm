@@ -104,10 +104,13 @@
 	];
 	
 	var Alq=new Array();
+	// Alq [equipo] [slot] [0: herramienta ; 1: tiempo]
 	var Points=new Array();
+	// Points [equipo] [0:puntos ; 1:numero de alquileres]
 	
 	Actualizar.count=0;
 	
+	//Parte activa:
 	function Actualizar()
 	{
 		document.body.style.background="RGB(255,255,255)";
@@ -118,6 +121,7 @@
 		{
 			for(j=0;j<nSlots;j++)
 			{
+			    
 				if(Alq[i][j][0]==-1)
 				{
 					document.a["t_"+i+"_"+j].value="Libre";
@@ -125,12 +129,14 @@
 				}
 				else
 				{
+				    // actualizar tiempo
 					delta=-t+(Alq[i][j][1]+60*Herr[Alq[i][j][0]][1]);
 					if(delta<0)
 						document.a["t_"+i+"_"+j].value="    - "+parseInt(-delta/60)+":"+(parseInt(-delta%60)<10?"0":"")+parseInt(-delta%60);
 					else
 						document.a["t_"+i+"_"+j].value=parseInt(delta/60)+":"+(parseInt(delta%60)<10?"0":"")+parseInt(delta%60);
 					document.a["m_"+i+"_"+j].value=Alq[i][j][0];
+					//colores
 					if(delta/60<0)
 					{
 						document.a["t_"+i+"_"+j].style.background="RGB(255,"+(Actualizar.count%3>1?255:0)+","+(Actualizar.count%3<1?255:0)+")";
@@ -153,6 +159,7 @@
 			document.a["p_"+i].value=parseInt(Points[i][0]);
 			document.a["n_"+i].value=Points[i][1];
 		}
+		// guardar estado
 		localStorage.setItem('Points',Points);
 		localStorage.setItem('Alq',Alq);		
 	}
@@ -205,6 +212,8 @@
 		{alert("Nada alquilado");}
 	}
 	
+	
+	//generador HTML
 	for(i=0;i<Teams.length;i++)
 	{
 		Alq[i]=new Array();
@@ -236,6 +245,8 @@
 		document.write("</td><td><input id=\"p_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td>");			
 		document.write("<td><input id=\"n_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td><td><textarea rows=\"4\" style=\"width:500px;\"></textarea></td>");
 	}
+	
+	//CARGA de datos
 	if (localStorage.getItem('Points'))
 		if(confirm("Cargar datos guardados?")||confirm("Va a SOBREESCRIBIR LOS DATOS ANTERIORES!\nCargar datos guardados?"))
 		{
@@ -256,6 +267,7 @@
 			}
 		}
 	
+	//Arranque
 	self.setInterval(function(){Actualizar()},200);
 //-->
 </script>

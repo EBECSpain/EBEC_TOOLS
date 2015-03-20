@@ -41,7 +41,7 @@
 <body>
 
 <div id="contenedor" style="width:2000px">
-	<img id="imgback" src="fondo.png">     
+	<img id="imgback" src="fondoMainSpain.png">     
 	<div id="main">		
 		<p>&nbsp;<br>
 		</p><div style="padding-left:0px" align="justify">
@@ -234,6 +234,29 @@
 		else
 		{alert("Nada alquilado");}
 	}
+	
+	//////////////////////////////////////
+	function Comprar(team,slot)
+	{
+		var idCuad = "t_" + team + "_" + slot;
+		var idDesplegable = "m_" + team + "_" + slot
+		var CantidadComprar = document.getElementById(idCuad).value;
+		var matCompr = document.getElementById(idDesplegable).value;
+		
+		if (matCompr == -1)
+		{
+		
+			alert("Nada para comprar");
+			
+		}else{
+		
+			Points[team][0]+=Materiales[matCompr][1]*CantidadComprar;
+			Points[team][1]+=1*CantidadComprar;
+			
+		}
+	}
+	
+	/////////////////////////////////////
 	
 	
 	//generador HTML

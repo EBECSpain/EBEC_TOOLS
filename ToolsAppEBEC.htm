@@ -70,6 +70,7 @@
 	var nSlots=3;
 	var Herr=[
 	//{herramienta,minutos_max,coste_coger,coste_minuto},
+		["Prueba con un minuto (...)",1, 40, 0], //Borrar cuando se vaya a utilizar de verdad
 		["Pistola de silicona(40)",30,40,0],
 		["Sierra metal       (40)",30,25,0],
 		["Serrucho madera    (25)",30,25,0],
@@ -114,14 +115,14 @@
 		document.all.imgback.style.opacity=100;
 		Actualizar.count+=1;
 		var t=(new Date()).getTime()/1000;
-		for(i=0;i<Teams.length;i++)
+		for(i=0;i<Teams.length;i++) //Para cada equipo [i]
 		{
-			for(j=0;j<nSlots;j++)
+			for(j=0;j<nSlots;j++) //Para cada slot [j]
 			{
-				if(Alq[i][j][0]==-1)
+				if(Alq[i][j][0]==-1) //Si no está alquilado se deja "Libre" y el fondo en blanco.
 				{
 					document.a["t_"+i+"_"+j].value="Libre";
-					document.a["t_"+i+"_"+j].style.background="RGB(255,255,255)";
+					document.a["t_"+i+"_"+j].style.background="RGB(255,255,255)"; 
 				}
 				else
 				{
@@ -136,8 +137,11 @@
 						document.a["t_"+i+"_"+j].style.background="RGB(255,"+(Actualizar.count%3>1?255:0)+","+(Actualizar.count%3<1?255:0)+")";
 						if(Actualizar.count%10<5)
 						{
-							document.body.style.background="RGB(255,100,100)";
-							document.all.imgback.style.opacity=0;
+							//document.body.style.background="RGB(255,100,100)"; Parpadea toda la pantalla (con colorines) => Epilepsia onfaya
+							//document.all.imgback.style.opacity=0;
+							
+							document.a["t_"+i+"_"+j].style.background="RGB(255,100,100)"; //Parpadea solo el recuadro del tiempo que se ha pasado. 
+																						// => Epilepsia resuelta. El fondo se mantiene normal.
 						}
 					}
 					else if(delta/60<1)

@@ -41,7 +41,7 @@
 <body>
 
 <div id="contenedor" style="width:2000px">
-	<img id="imgback" src="fondo.png">     
+	<img id="imgback" src="fondoMainSpain.png">     
 	<div id="main">		
 		<p>&nbsp;<br>
 		</p><div style="padding-left:0px" align="justify">
@@ -49,10 +49,10 @@
 		<table border="3" align="center">
 		<tbody>
 		<tr>
-      <th width="50" height="30" scope="col">Equipo</th>
-      <th scope="col">Herramientas alquiladas </th>
+      <th width="50" height="30" scope="col">Equipos</th>
+      <th scope="col">Herramientas y Materiales </th>
       <th width="100" scope="col">Tiempo restante </th>
-      <th width="190" scope="col">Controles</th>      
+      <th width="230" scope="col">Controles</th>      
 	  <th width="50" scope="col">Puntos</th>
 	  <th width="50" scope="col">Num Veces</th>
 	  <th width="500" scope="col">Comment</th>
@@ -70,6 +70,7 @@
 	var nSlots=3;
 	var Herr=[
 	//{herramienta,minutos_max,coste_coger,coste_minuto},
+
 		["Prueba con un minuto (...)",1, 40, 0], //Borrar cuando se vaya a utilizar de verdad
 		["Pistola de silicona(40)",30,40,0],
 		["Sierra metal       (40)",30,25,0],
@@ -101,14 +102,73 @@
 		["Mat: Bridas    	  (5)",30,5,0],
 		["Mat: Cola blanca	 (15)",30,15,0],
 		["Mat: Cinta american(15)",30,15,0],
+
+		["Pistola de silicona",30,40,0],
+		["Sierra metal       ",30,25,0],
+		["Serrucho madera    ",30,25,0],
+		["Sierra de arco     ",30,25,0],
+		["Guantes             ",30,0,0],
+		["Martillo            ",30,0,0],
+		["Tijeras             ",30,0,0],
+		["Cutter              ",30,0,0],
+		["Metro               ",30,0,0],
+		["Alargador           ",30,0,0],
+		["Destornillador      ",30,0,0],
+		["Mat: Liston madera ",30,10,0],
+		["Mat: Liston d4-6mm ",30,10,0],
+		["Mat: Liston d8-10mm",30,15,0],
+		["Mat: Liston d12mm  ",30,20,0],
+		["Mat: Liston 5x10	 ",30,10,0],
+		["Mat: Varilla metal ",30,30,0],
+		["Mat: Tuerca metal	 ",30,10,0],
+		["Mat: Panel madera  ",30,50,0],
+		["Mat: Panel corcho	 ",30,50,0],
+		["Mat: Carton ondulad",30,20,0],
+		["Mat: Cuerda 1m	 ",30,10,0],
+		["Mat: Hembrilla	  ",30,5,0],
+		["Mat: Polea     	 ",30,30,0],
+		["Mat: Clavos 2ud 	  ",30,5,0],
+		["Mat: Gomas largas	  ",30,2,0],
+		["Mat: Gomas cortas	  ",30,1,0],
+		["Mat: Bridas    	  ",30,5,0],
+		["Mat: Cola blanca	 ",30,15,0],
+		["Mat: Cinta american",30,15,0],
+
 		
 	];
 	
+	var Materiales=[
+	//{material,coste_coger},
+		["Mat: Liston madera ",10],
+		["Mat: Liston d4-6mm ",10],
+		["Mat: Liston d8-10mm",15],
+		["Mat: Liston d12mm  ",20],
+		["Mat: Liston 5x10	 ",10],
+		["Mat: Varilla metal ",30],
+		["Mat: Tuerca metal	 ",10],
+		["Mat: Panel madera  ",50],
+		["Mat: Panel corcho	 ",50],
+		["Mat: Carton ondulad",20],
+		["Mat: Cuerda 1m	 ",10],
+		["Mat: Hembrilla	  ",5],
+		["Mat: Polea     	 ",30],
+		["Mat: Clavos 2ud 	  ",5],
+		["Mat: Gomas largas	  ",2],
+		["Mat: Gomas cortas	  ",1],
+		["Mat: Bridas    	  ",5],
+		["Mat: Cola blanca	 ",15],
+		["Mat: Cinta american",15],
+		["Mat: Varios",1],
+	];
+	
 	var Alq=new Array();
+	// Alq [equipo] [slot] [0: herramienta ; 1: tiempo]
 	var Points=new Array();
+	// Points [equipo] [0:puntos ; 1:numero de alquileres]
 	
 	Actualizar.count=0;
 	
+	//Parte activa:
 	function Actualizar()
 	{
 		document.body.style.background="RGB(255,255,255)";
@@ -119,19 +179,23 @@
 		{
 			for(j=0;j<nSlots;j++) //Para cada slot [j]
 			{
+
 				if(Alq[i][j][0]==-1) //Si no está alquilado se deja "Libre" y el fondo en blanco.
+
 				{
 					document.a["t_"+i+"_"+j].value="Libre";
 					document.a["t_"+i+"_"+j].style.background="RGB(255,255,255)"; 
 				}
 				else
 				{
+				    // actualizar tiempo
 					delta=-t+(Alq[i][j][1]+60*Herr[Alq[i][j][0]][1]);
 					if(delta<0)
 						document.a["t_"+i+"_"+j].value="    - "+parseInt(-delta/60)+":"+(parseInt(-delta%60)<10?"0":"")+parseInt(-delta%60);
 					else
 						document.a["t_"+i+"_"+j].value=parseInt(delta/60)+":"+(parseInt(delta%60)<10?"0":"")+parseInt(delta%60);
 					document.a["m_"+i+"_"+j].value=Alq[i][j][0];
+					//colores
 					if(delta/60<0)
 					{
 						document.a["t_"+i+"_"+j].style.background="RGB(255,"+(Actualizar.count%3>1?255:0)+","+(Actualizar.count%3<1?255:0)+")";
@@ -157,6 +221,7 @@
 			document.a["p_"+i].value=parseInt(Points[i][0]);
 			document.a["n_"+i].value=Points[i][1];
 		}
+		// guardar estado
 		localStorage.setItem('Points',Points);
 		localStorage.setItem('Alq',Alq);		
 	}
@@ -209,27 +274,66 @@
 		{alert("Nada alquilado");}
 	}
 	
+	//////////////////////////////////////
+	function Comprar(team,slot)
+	{
+		var idCuad = "t_" + team + "_" + slot;
+		var idDesplegable = "m_" + team + "_" + slot
+		var CantidadComprar = document.getElementById(idCuad).value;
+		var matCompr = document.getElementById(idDesplegable).value;
+		
+		if (matCompr == -1)
+		{
+		
+			alert("Nada para comprar");
+			
+		}else{
+		
+			Points[team][0]+=Materiales[matCompr][1]*CantidadComprar;
+			Points[team][1]+=1*CantidadComprar;
+			
+		}
+	}
+	
+	/////////////////////////////////////
+	
+	
+	//generador HTML
 	for(i=0;i<Teams.length;i++)
 	{
 		Alq[i]=new Array();
 		Points[i]=[0,0];
-		document.write("<tr><td><div align=\"center\"><font size=\"5\">Equipo "+Teams[i]+"</font></div></td><td><div align=\"center\">");
+		document.write("<tr><td><div align=\"center\"><font size=\"5\">Equipo "+Teams[i]+"</font></div></td><td><div align=\"center\"><p><b>Alquiler de herramientas</b></p>");
 		for(j=0;j<nSlots;j++)
 		{
 			Alq[i][j]=[-1,0];
 			document.write("<select id=\"m_"+i+"_"+j+"\"><option value=\"-1\">-</option>");
 			for(k=0;k<Herr.length;k++)
 			{
-				document.write("<option value=\""+k+"\">"+Herr[k][0]+"</option>");
+				document.write("<option value=\""+k+"\">"+Herr[k][0]+"("+Herr[k][2]+")"+"</option>");
 			}
 			document.write("</select><br>");
 		}
-		document.write("</div></td><td><div align=\"center\">");
+		//Código del cuadro de herramientas
+		
+		document.write("<p><b>Compra de materiales</b></p><select id=\"m_"+i+"_"+j+"\"><option value=\"-1\">-</option>");
+		for(k=0;k<Materiales.length;k++)
+		{
+			document.write("<option value=\""+k+"\">"+Materiales[k][0]+"("+Materiales[k][1]+")"+"</option>");
+		}
+		document.write("</select><br><br>");
+		
+		
+		document.write("</div></td><td><div align=\"center\"><br><br><br>");
+		
+		
+		
 		for(j=0;j<nSlots;j++)
 		{
 			document.write("<input id=\"t_"+i+"_"+j+"\" type=\"text\" readonly value=\"0\" style=\"width:100px;\"><br>");			
 		}
-		document.write("</div></td><td>");
+		document.write("<p><b>Cantidad</b></p><input id=\"t_"+i+"_"+j+"\" type=\"text\" value=\"0\" style=\"width:100px;text-align:center;\"><br>");
+		document.write("<br><br></div></td><td><br>");
 		for(j=0;j<nSlots;j++)
 		{
 			document.write("<div align=\"center\">");
@@ -237,9 +341,14 @@
 			document.write("<input type=\"button\" value=\"Devolver\" onclick=\"Devolver("+i+","+j+")\" >");			
 			document.write("<input type=\"button\" value=\"Corregir\" onclick=\"Corregir("+i+","+j+")\" ></div>");			
 		}
+		//Botón de comprar, falta crear la función asociada
+		document.write("<br><br><div align=\"center\"><input type=\"button\" value=\"Comprar\" onclick=\"Comprar("+i+","+j+")\" ></div>");
+		
 		document.write("</td><td><input id=\"p_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td>");			
 		document.write("<td><input id=\"n_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td><td><textarea rows=\"4\" style=\"width:500px;\"></textarea></td>");
 	}
+	
+	//CARGA de datos
 	if (localStorage.getItem('Points'))
 		if(confirm("Cargar datos guardados?")||confirm("Va a SOBREESCRIBIR LOS DATOS ANTERIORES!\nCargar datos guardados?"))
 		{
@@ -260,6 +369,7 @@
 			}
 		}
 	
+	//Arranque
 	self.setInterval(function(){Actualizar()},200);
 //-->
 </script>

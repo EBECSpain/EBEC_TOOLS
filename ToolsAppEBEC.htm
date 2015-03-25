@@ -69,72 +69,18 @@
 	];
 	var nSlots=3;
 	var Herr=[
-	//{herramienta,minutos_max,coste_coger,coste_minuto},
-
-		["Prueba con un minuto (...)",1, 40, 0], //Borrar cuando se vaya a utilizar de verdad
-		["Pistola de silicona(40)",30,40,0],
-		["Sierra metal       (40)",30,25,0],
-		["Serrucho madera    (25)",30,25,0],
-		["Sierra de arco     (25)",30,25,0],
-		["Guantes             (0)",30,0,0],
-		["Martillo            (0)",30,0,0],
-		["Tijeras             (0)",30,0,0],
-		["Cutter              (0)",30,0,0],
-		["Metro               (0)",30,0,0],
-		["Alargador           (0)",30,0,0],
-		["Destornillador      (0)",30,0,0],
-		["Mat: Liston madera (10)",30,10,0],
-		["Mat: Liston d4-6mm (10)",30,10,0],
-		["Mat: Liston d8-10mm(15)",30,15,0],
-		["Mat: Liston d12mm  (20)",30,20,0],
-		["Mat: Liston 5x10	 (10)",30,10,0],
-		["Mat: Varilla metal (30)",30,30,0],
-		["Mat: Tuerca metal	 (10)",30,10,0],
-		["Mat: Panel madera  (50)",30,50,0],
-		["Mat: Panel corcho	 (50)",30,50,0],
-		["Mat: Carton ondulad(20)",30,20,0],
-		["Mat: Cuerda 1m	 (10)",30,10,0],
-		["Mat: Hembrilla	  (5)",30,5,0],
-		["Mat: Polea     	 (10)",30,30,0],
-		["Mat: Clavos 2ud 	  (5)",30,5,0],
-		["Mat: Gomas largas	  (2)",30,2,0],
-		["Mat: Gomas cortas	  (1)",30,1,0],
-		["Mat: Bridas    	  (5)",30,5,0],
-		["Mat: Cola blanca	 (15)",30,15,0],
-		["Mat: Cinta american(15)",30,15,0],
-
+	//{herramienta,minutos_max,coste_comprar,coste_coger,coste_minuto},
 		["Pistola de silicona",30,40,0],
 		["Sierra metal       ",30,25,0],
 		["Serrucho madera    ",30,25,0],
 		["Sierra de arco     ",30,25,0],
-		["Guantes             ",30,0,0],
-		["Martillo            ",30,0,0],
-		["Tijeras             ",30,0,0],
-		["Cutter              ",30,0,0],
-		["Metro               ",30,0,0],
-		["Alargador           ",30,0,0],
-		["Destornillador      ",30,0,0],
-		["Mat: Liston madera ",30,10,0],
-		["Mat: Liston d4-6mm ",30,10,0],
-		["Mat: Liston d8-10mm",30,15,0],
-		["Mat: Liston d12mm  ",30,20,0],
-		["Mat: Liston 5x10	 ",30,10,0],
-		["Mat: Varilla metal ",30,30,0],
-		["Mat: Tuerca metal	 ",30,10,0],
-		["Mat: Panel madera  ",30,50,0],
-		["Mat: Panel corcho	 ",30,50,0],
-		["Mat: Carton ondulad",30,20,0],
-		["Mat: Cuerda 1m	 ",30,10,0],
-		["Mat: Hembrilla	  ",30,5,0],
-		["Mat: Polea     	 ",30,30,0],
-		["Mat: Clavos 2ud 	  ",30,5,0],
-		["Mat: Gomas largas	  ",30,2,0],
-		["Mat: Gomas cortas	  ",30,1,0],
-		["Mat: Bridas    	  ",30,5,0],
-		["Mat: Cola blanca	 ",30,15,0],
-		["Mat: Cinta american",30,15,0],
-
-		
+		["Guantes            ",30,0,0],
+		["Martillo           ",30,0,0],
+		["Tijeras            ",30,0,0],
+		["Cutter             ",30,0,0],
+		["Metro              ",30,0,0],
+		["Alargador          ",30,0,0],
+		["Destornillador     ",30,0,0],
 	];
 	
 	var Materiales=[
@@ -303,6 +249,10 @@
 	{
 		Alq[i]=new Array();
 		Points[i]=[0,0];
+		
+		//Código del cuadro de Herramientas y Materiales
+		
+		//Selectores de Alquiler de herramientas
 		document.write("<tr><td><div align=\"center\"><font size=\"5\">Equipo "+Teams[i]+"</font></div></td><td><div align=\"center\"><p><b>Alquiler de herramientas</b></p>");
 		for(j=0;j<nSlots;j++)
 		{
@@ -314,8 +264,21 @@
 			}
 			document.write("</select><br>");
 		}
-		//Código del cuadro de herramientas
 		
+		//Selectores de Compra de herramientas
+		document.write("<p><b>Compra de herramientas</b></p>");
+		for(j=0;j<nSlots;j++)
+		{
+			Alq[i][j]=[-1,0];
+			document.write("<select id=\"m_"+i+"_"+j+"\"><option value=\"-1\">-</option>");
+			for(k=0;k<Herr.length;k++)
+			{
+				document.write("<option value=\""+k+"\">"+Herr[k][0]+"("+Herr[k][2]+")"+"</option>");
+			}
+			document.write("</select><br>");
+		}
+		
+		//Selectores de Compra de materiales
 		document.write("<p><b>Compra de materiales</b></p><select id=\"m_"+i+"_"+j+"\"><option value=\"-1\">-</option>");
 		for(k=0;k<Materiales.length;k++)
 		{
@@ -323,17 +286,26 @@
 		}
 		document.write("</select><br><br>");
 		
-		
 		document.write("</div></td><td><div align=\"center\"><br><br><br>");
 		
+		//Código del cuadro de Tiempo restante
 		
-		
+		//Tiempo restante de Alquiler de Herramientas
 		for(j=0;j<nSlots;j++)
 		{
 			document.write("<input id=\"t_"+i+"_"+j+"\" type=\"text\" readonly value=\"0\" style=\"width:100px;\"><br>");			
 		}
+		
+		//Cantidad de herramientas a comprar
+		document.write("<p><b>Cantidad</b></p><input id=\"t_"+i+"_"+j+"\" type=\"text\" value=\"0\" style=\"width:100px;text-align:center;\"><br>");
+		
+		//Cantidad de materiales a comprar
 		document.write("<p><b>Cantidad</b></p><input id=\"t_"+i+"_"+j+"\" type=\"text\" value=\"0\" style=\"width:100px;text-align:center;\"><br>");
 		document.write("<br><br></div></td><td><br>");
+		
+		//Código del cuadro de Controles
+		
+		//Botones de Alquilar, Devolver y Corregir de Alquiler de Herramientas
 		for(j=0;j<nSlots;j++)
 		{
 			document.write("<div align=\"center\">");
@@ -341,7 +313,11 @@
 			document.write("<input type=\"button\" value=\"Devolver\" onclick=\"Devolver("+i+","+j+")\" >");			
 			document.write("<input type=\"button\" value=\"Corregir\" onclick=\"Corregir("+i+","+j+")\" ></div>");			
 		}
-		//Botón de comprar, falta crear la función asociada
+		
+		//Botón de comprar herramientas, falta crear la función asociada
+		document.write("<br><br><div align=\"center\"><input type=\"button\" value=\"Comprar\" onclick=\"Comprar("+i+","+j+")\" ></div>");
+		
+		//Botón de comprar materiales, falta crear la función asociada
 		document.write("<br><br><div align=\"center\"><input type=\"button\" value=\"Comprar\" onclick=\"Comprar("+i+","+j+")\" ></div>");
 		
 		document.write("</td><td><input id=\"p_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td>");			

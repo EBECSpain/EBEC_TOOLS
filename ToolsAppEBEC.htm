@@ -40,7 +40,7 @@
 
 <body>
 
-<div id="contenedor" style="width:2000px">
+<div id="contenedor" style="width:3000px">
 	<img id="imgback" src="fondoMainSpain.png">     
 	<div id="main">		
 		<p>&nbsp;<br>
@@ -56,6 +56,7 @@
 	  <th width="50" scope="col">Puntos</th>
 	  <th width="50" scope="col">Num Veces</th>
 	  <th width="500" scope="col">Comment</th>
+	  <th width="1500" scope="col">History</th>
     </tr>
 <script language="javascript" type="text/javascript">
 <!--
@@ -165,8 +166,27 @@
 	// Alq [equipo] [slot] [0: herramienta ; 1: tiempo]
 	var Points=new Array();
 	// Points [equipo] [0:puntos ; 1:numero de alquileres]
+	var History=new Array();
+	// Histoty [equipo] [0:comma separated list (excel) ; 1:human readable (mostrado en la lista)]
 	
 	Actualizar.count=0;
+
+
+	//Para guardar como csv
+	function UpdateSaveTextLink(textToWrite)
+	{
+	
+		var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+	
+		var downloadLink = document.getElementById("b");
+		downloadLink.innerHTML = "Download as CSV";
+		downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+		
+	}	
+	function Encode(str)
+	{
+		return str.replace(/,/igm,"_").replace(/\|/igm,"_");
+	}
 	
 	//Parte activa:
 	function Actualizar()
@@ -220,10 +240,32 @@
 			}
 			document.a["p_"+i].value=parseInt(Points[i][0]);
 			document.a["n_"+i].value=Points[i][1];
+			document.a["history_"+i].value=History[i][1];
+			History[i][2]=Encode(document.a["comment_"+i].value);
 		}
 		// guardar estado
 		localStorage.setItem('Points',Points);
-		localStorage.setItem('Alq',Alq);		
+		localStorage.setItem('Alq',Alq);	
+		localStorage.setItem('History',History);
+		var out ="";
+		for(i=0;i<Teams.length;i++) //Para cada equipo [i]
+		{
+			out += Encode(Teams[i])+"\ncuando,posicion,elemento,accion,tiempo,puntos,total puntos,transacciones,equipo\n"+(History[i][0]).replace(/\|/igm,",")+"\nCOMMENTS:\n"+History[i][2]+"\n\n\n";
+		}
+		UpdateSaveTextLink(out);
+	}
+	
+	function AddToHistory(team,slot,time,name,action,delta_t,delta_points,cummulated_points_after,num_alq)
+	{
+		time=parseInt(time)
+		History[team][0]+=time+"|"+slot+"|"+Encode(name)+"|"+action+"|"+delta_t+"|"+delta_points+"|"+cummulated_points_after+"|"+num_alq+"|"+Encode(Teams[team])+"\n"
+		if(action=="Comprar")
+			History[team][1]="** "+time+": "+action+" "+delta_t+" "+name+" en la posición "+slot+" por "+delta_points+" puntos. El equipo "+Teams[team]+" tiene ahora "+
+				cummulated_points_after+" puntos en total. Total "+num_alq+" transacciones.\n"+History[team][1]
+		else
+			History[team][1]="** "+time+": "+action+" "+name+" en la posición "+slot+" por "+delta_points+" puntos. El equipo "+Teams[team]+" tiene ahora "+
+				cummulated_points_after+" puntos en total. Total "+num_alq+" transacciones.\n"+History[team][1]
+			
 	}
 	
 	function Alquilar(team,slot)
@@ -236,6 +278,7 @@
 			{
 				Alq[team][slot][0]=h;
 				Alq[team][slot][1]=t;
+				AddToHistory(team,slot,t,Herr[h][0]+"("+Herr[h][2]+")","Alquilar",0,0,Points[team][0],Points[team][1]);
 			}
 			else
 				alert("seleccione la herramienta a alquilar");
@@ -253,6 +296,10 @@
 			var t=(new Date()).getTime()/1000;
 			Points[team][0]+=(t-Alq[team][slot][1])/60*Herr[Alq[team][slot][0]][3]+Herr[Alq[team][slot][0]][2];
 			Points[team][1]+=1;
+			var h = Alq[team][slot][0];
+			AddToHistory(team,slot,t,Herr[h][0]+"("+Herr[h][2]+")","Devolver",t-Alq[team][slot][1],
+			            (t-Alq[team][slot][1])/60*Herr[Alq[team][slot][0]][3]+Herr[Alq[team][slot][0]][2],
+						      Points[team][0],Points[team][1]);
 			Alq[team][slot][0]=-1;
 			Alq[team][slot][1]=0;
 		}
@@ -266,6 +313,8 @@
 		{
 			if(confirm("CORREGIR?\nDevolver "+Herr[Alq[team][slot][0]][0]+" \ndel equipo "+Teams[team]+" en la posición "+slot+" \nsin modificar los puntos?"))
 			{
+				var h = Alq[team][slot][0];
+				AddToHistory(team,slot,(new Date()).getTime()/1000,Herr[h][0]+"("+Herr[h][2]+")","Corregir",0,0,Points[team][0],Points[team][1]);
 				Alq[team][slot][0]=-1;
 				Alq[team][slot][1]=0;
 			}
@@ -287,10 +336,16 @@
 		
 			alert("Nada para comprar");
 			
+		}else if(CantidadComprar==0)
+		{
+			
+			alert("Seleccionar cantidad");
+			
 		}else{
 		
 			Points[team][0]+=Materiales[matCompr][1]*CantidadComprar;
 			Points[team][1]+=1*CantidadComprar;
+			AddToHistory(team,slot,(new Date()).getTime()/1000,Materiales[matCompr][0]+"("+Materiales[matCompr][1]+")","Comprar",CantidadComprar,Materiales[matCompr][1]*CantidadComprar,Points[team][0],Points[team][1]);
 			
 		}
 	}
@@ -303,6 +358,8 @@
 	{
 		Alq[i]=new Array();
 		Points[i]=[0,0];
+		History[i]=["","",""];
+		
 		document.write("<tr><td><div align=\"center\"><font size=\"5\">Equipo "+Teams[i]+"</font></div></td><td><div align=\"center\"><p><b>Alquiler de herramientas</b></p>");
 		for(j=0;j<nSlots;j++)
 		{
@@ -341,11 +398,12 @@
 			document.write("<input type=\"button\" value=\"Devolver\" onclick=\"Devolver("+i+","+j+")\" >");			
 			document.write("<input type=\"button\" value=\"Corregir\" onclick=\"Corregir("+i+","+j+")\" ></div>");			
 		}
-		//Botón de comprar, falta crear la función asociada
+		//Botón de comprar
 		document.write("<br><br><div align=\"center\"><input type=\"button\" value=\"Comprar\" onclick=\"Comprar("+i+","+j+")\" ></div>");
 		
 		document.write("</td><td><input id=\"p_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td>");			
-		document.write("<td><input id=\"n_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td><td><textarea rows=\"4\" style=\"width:500px;\"></textarea></td>");
+		document.write("<td><input id=\"n_"+i+"\" type=\"text\" readonly value=\"0\" style=\"width:50px;\"></td><td><textarea id=comment_"+i
+		               +" rows=\"10\" style=\"width:500px;\"></textarea></td><td><textarea id=history_"+i+" rows=\"10\" style=\"width:1500px;\"></textarea></td>");
 	}
 	
 	//CARGA de datos
@@ -367,6 +425,14 @@
 					Alq[i/(nSlots*2)][j][1]=Number(foo[i+2*j+1]);
 				}					
 			}
+			foo=localStorage.getItem('History').split(",");
+			for(i=0;i<foo.length;i+=3)
+			{
+				History[i/3][0]=foo[i];
+				History[i/3][1]=foo[i+1];
+				History[i/3][2]=foo[i+2];
+				document.a["comment_"+i/3].value=History[i/3][2];
+			}
 		}
 	
 	//Arranque
@@ -376,6 +442,8 @@
   </tbody>	
   </table>
  </form>
+ <p/>
+ <a id="b" download="EBEC_results.csv"></a>
 </body>
 </html>
 

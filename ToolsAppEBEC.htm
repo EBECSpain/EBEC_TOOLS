@@ -40,8 +40,8 @@
 
 <body>
 
-<div id="contenedor" style="width:3000px">
-	<img id="imgback" src="fondoMainSpain.png">     
+<div id="contenedor" style="width:4000px">
+	<img id="imgback" src="fondo_tienda.png">     
 	<div id="main">		
 		<p>&nbsp;<br>
 		</p><div style="padding-left:0px" align="justify">
@@ -60,106 +60,94 @@
     </tr>
 <script language="javascript" type="text/javascript">
 <!--
+
+	// Nombres de los 6 equipos
 	var Teams=[
-	"1",
-	"2",
-	"3",
-	"4",
-	"5",
-	"6"
+	"Fire",
+	"Light",
+	"Wind",
+	"Water",
+	"Earth",
+	"Darkness"
 	];
+	
 	var nSlots=4;
 	var Herr=[
 	//{herramienta,minutos_max,coste_coger,coste_minuto},
-
-		["Prueba con un minuto (...)",1, 40, 0], //Borrar cuando se vaya a utilizar de verdad
-		["Pistola de silicona(40)",30,40,0],
-		["Sierra metal       (40)",30,25,0],
-		["Serrucho madera    (25)",30,25,0],
-		["Sierra de arco     (25)",30,25,0],
-		["Guantes             (0)",30,0,0],
-		["Martillo            (0)",30,0,0],
-		["Tijeras             (0)",30,0,0],
-		["Cutter              (0)",30,0,0],
-		["Metro               (0)",30,0,0],
-		["Alargador           (0)",30,0,0],
-		["Destornillador      (0)",30,0,0],
-		["Mat: Liston madera (10)",30,10,0],
-		["Mat: Liston d4-6mm (10)",30,10,0],
-		["Mat: Liston d8-10mm(15)",30,15,0],
-		["Mat: Liston d12mm  (20)",30,20,0],
-		["Mat: Liston 5x10	 (10)",30,10,0],
-		["Mat: Varilla metal (30)",30,30,0],
-		["Mat: Tuerca metal	 (10)",30,10,0],
-		["Mat: Panel madera  (50)",30,50,0],
-		["Mat: Panel corcho	 (50)",30,50,0],
-		["Mat: Carton ondulad(20)",30,20,0],
-		["Mat: Cuerda 1m	 (10)",30,10,0],
-		["Mat: Hembrilla	  (5)",30,5,0],
-		["Mat: Polea     	 (10)",30,30,0],
-		["Mat: Clavos 2ud 	  (5)",30,5,0],
-		["Mat: Gomas largas	  (2)",30,2,0],
-		["Mat: Gomas cortas	  (1)",30,1,0],
-		["Mat: Bridas    	  (5)",30,5,0],
-		["Mat: Cola blanca	 (15)",30,15,0],
-		["Mat: Cinta american(15)",30,15,0],
-
-		["Pistola de silicona",30,40,0],
-		["Sierra metal       ",30,25,0],
-		["Serrucho madera    ",30,25,0],
-		["Sierra de arco     ",30,25,0],
-		["Guantes             ",30,0,0],
-		["Martillo            ",30,0,0],
-		["Tijeras             ",30,0,0],
-		["Cutter              ",30,0,0],
-		["Metro               ",30,0,0],
-		["Alargador           ",30,0,0],
-		["Destornillador      ",30,0,0],
-		["Mat: Liston madera ",30,10,0],
-		["Mat: Liston d4-6mm ",30,10,0],
-		["Mat: Liston d8-10mm",30,15,0],
-		["Mat: Liston d12mm  ",30,20,0],
-		["Mat: Liston 5x10	 ",30,10,0],
-		["Mat: Varilla metal ",30,30,0],
-		["Mat: Tuerca metal	 ",30,10,0],
-		["Mat: Panel madera  ",30,50,0],
-		["Mat: Panel corcho	 ",30,50,0],
-		["Mat: Carton ondulad",30,20,0],
-		["Mat: Cuerda 1m	 ",30,10,0],
-		["Mat: Hembrilla	  ",30,5,0],
-		["Mat: Polea     	 ",30,30,0],
-		["Mat: Clavos 2ud 	  ",30,5,0],
-		["Mat: Gomas largas	  ",30,2,0],
-		["Mat: Gomas cortas	  ",30,1,0],
-		["Mat: Bridas    	  ",30,5,0],
-		["Mat: Cola blanca	 ",30,15,0],
-		["Mat: Cinta american",30,15,0],
-
+		//Herramientas de tiempo indefinido
+		["Meter (5m)",600,0,0],
+		["Squad",600,0,0],
+		["Clamps",600,0,0],
+		["Safety glasses",600,0,0],
+		["Bow saw",600,50,0],
+		["Hacksaw",600,25,0],
 		
+		//Herramientas de 30 minutos
+		["Drill",30,75,0],
+		["Sander",30,100,0],
+		["Glue gun",30,50,0],
+		["Electric saw",30,100,0],
+		["Level",30,20,0],
+		["Saw",30,50,0],
+		["Work table",30,25,0],
+		["Stapler",30,20,0],
+		["Circular saw",30,100,0],
+		["Electric sander",30,100,0],
+		["Pliers",30,25,0],
+		["Hammer",30,20,0],
+		["Cutter",30,20,0],
+		["Soldering iron",30,25,0],
+		["Glue",30,50,0]
 	];
 	
-	var Materiales=[
+	var Mat=[
 	//{material,coste_coger},
-		["Mat: Liston madera ",10],
-		["Mat: Liston d4-6mm ",10],
-		["Mat: Liston d8-10mm",15],
-		["Mat: Liston d12mm  ",20],
-		["Mat: Liston 5x10	 ",10],
-		["Mat: Varilla metal ",30],
-		["Mat: Tuerca metal	 ",10],
-		["Mat: Panel madera  ",50],
-		["Mat: Panel corcho	 ",50],
-		["Mat: Carton ondulad",20],
-		["Mat: Cuerda 1m	 ",10],
-		["Mat: Hembrilla	  ",5],
-		["Mat: Polea     	 ",30],
-		["Mat: Clavos 2ud 	  ",5],
-		["Mat: Gomas largas	  ",2],
-		["Mat: Gomas cortas	  ",1],
-		["Mat: Bridas    	  ",5],
-		["Mat: Cola blanca	 ",15],
-		["Mat: Cinta american",15],
-		["Mat: Varios",1],
+		//Topic Marvel
+		["Mat Marvel: Electric motor",100],
+		["Mat Marvel: Battery (4.5V)",25],
+		["Mat Marvel: Battery (1.5V)",75],
+		["Mat Marvel: Wooden slats",25],
+		["Mat Marvel: Plywood",25],
+		["Mat Marvel: Cupper wire",15],
+		["Mat Marvel: Switch",15],
+		["Mat Marvel: Thermofuse glue",15],
+		["Mat Marvel: Screw (x10)",25],
+		["Mat Marvel: Washer (x10)",25],
+		["Mat Marvel: Nut (x10)",25],
+		["Mat Marvel: Nail (x10)",25],
+		["Mat Marvel: Tin (10cm)",25],
+		["Mat Marvel: Wire (20cm)",25],
+		["Mat Marvel: Drinking straw (x10)",5],
+		["Mat Marvel: Sticks (x20)",5],
+		["Mat Marvel: Rubber band (x5)",5],
+		["Mat Marvel: Rubber/Eraser",10],
+		["Mat Marvel: Electric tape",100],
+		["Mat Marvel: Coloured LEDs (x4)",50],
+		["Tool Marvel: Glue gun",150],
+		["Tool Marvel: Hammer",50],
+		["Tool Marvel: Cutter",50],
+		
+		// Topic Project X
+		["Mat Project X: Depressor (x50)",75],
+		["Mat Project X: Plywood (x3)",50],
+		["Mat Project X: Wood strips",20],
+		["Mat Project X: Nails (x10)",15],
+		["Mat Project X: Thick wire (20cm)",10],
+		["Mat Project X: Corrugated cardboard",40],
+		["Mat Project X: Plastic bottle",25],
+		["Mat Project X: Rubber bands (x10)",10],
+		["Mat Project X: Tetrabrick",10],
+		["Mat Project X: PVC pipe",100],
+		["Mat Project X: Flexible tube",75],
+		["Mat Project X: Coloured plastic bag",30],
+		["Mat Project X: Can",10],
+		["Mat Project X: Polystyrene",75],
+		["Mat Project X: Ballons (x2)",20],
+		["Mat Project X: Thermofuse glue",15],
+		["Tool Project X: Glue gun",120],
+		["Tool Project X: Hammer",50],
+		["Tool Project X: Cutter",50],
+		["Tool Project X: Glue",100]
 	];
 	
 	var Alq=new Array();
@@ -170,7 +158,6 @@
 	// Histoty [equipo] [0:comma separated list (excel) ; 1:human readable (mostrado en la lista)]
 	
 	Actualizar.count=0;
-
 
 	//Para guardar como csv
 	function UpdateSaveTextLink(textToWrite)
@@ -278,7 +265,7 @@
 			{
 				Alq[team][slot][0]=h;
 				Alq[team][slot][1]=t;
-				AddToHistory(team,slot,t,Herr[h][0]+"("+Herr[h][2]+")","Alquilar",0,0,Points[team][0],Points[team][1]);
+				AddToHistory(team,slot,t,Herr[h][0]+" ("+Herr[h][2]+")","Alquilar",0,0,Points[team][0],Points[team][1]);
 			}
 			else
 				alert("seleccione la herramienta a alquilar");
@@ -297,7 +284,7 @@
 			Points[team][0]+=(t-Alq[team][slot][1])/60*Herr[Alq[team][slot][0]][3]+Herr[Alq[team][slot][0]][2];
 			Points[team][1]+=1;
 			var h = Alq[team][slot][0];
-			AddToHistory(team,slot,t,Herr[h][0]+"("+Herr[h][2]+")","Devolver",t-Alq[team][slot][1],
+			AddToHistory(team,slot,t,Herr[h][0]+" ("+Herr[h][2]+")","Devolver",t-Alq[team][slot][1],
 			            (t-Alq[team][slot][1])/60*Herr[Alq[team][slot][0]][3]+Herr[Alq[team][slot][0]][2],
 						      Points[team][0],Points[team][1]);
 			Alq[team][slot][0]=-1;
@@ -343,9 +330,9 @@
 			
 		}else{
 		
-			Points[team][0]+=Materiales[matCompr][1]*CantidadComprar;
+			Points[team][0]+=Mat[matCompr][1]*CantidadComprar;
 			Points[team][1]+=1*CantidadComprar;
-			AddToHistory(team,slot,(new Date()).getTime()/1000,Materiales[matCompr][0]+"("+Materiales[matCompr][1]+")","Comprar",CantidadComprar,Materiales[matCompr][1]*CantidadComprar,Points[team][0],Points[team][1]);
+			AddToHistory(team,slot,(new Date()).getTime()/1000,Mat[matCompr][0]+" ("+Mat[matCompr][1]+")","Comprar",CantidadComprar,Mat[matCompr][1]*CantidadComprar,Points[team][0],Points[team][1]);
 			
 		}
 	}
@@ -367,16 +354,16 @@
 			document.write("<select id=\"m_"+i+"_"+j+"\"><option value=\"-1\">-</option>");
 			for(k=0;k<Herr.length;k++)
 			{
-				document.write("<option value=\""+k+"\">"+Herr[k][0]+"("+Herr[k][2]+")"+"</option>");
+				document.write("<option value=\""+k+"\">"+Herr[k][0]+" ("+Herr[k][2]+")"+"</option>");
 			}
 			document.write("</select><br>");
 		}
 		//Código del cuadro de herramientas
 		
 		document.write("<p><b>Compra de materiales</b></p><select id=\"m_"+i+"_"+j+"\"><option value=\"-1\">-</option>");
-		for(k=0;k<Materiales.length;k++)
+		for(k=0;k<Mat.length;k++)
 		{
-			document.write("<option value=\""+k+"\">"+Materiales[k][0]+"("+Materiales[k][1]+")"+"</option>");
+			document.write("<option value=\""+k+"\">"+Mat[k][0]+" ("+Mat[k][1]+")"+"</option>");
 		}
 		document.write("</select><br><br>");
 		
